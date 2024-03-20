@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class LightController {
     private double desiredLightLevel;
     private List<Light> lights;
@@ -6,7 +9,7 @@ public class LightController {
     public LightController(double desiredLightLevel) {
         this.desiredLightLevel = desiredLightLevel;
         this.lights = new ArrayList<>();
-        this.lightSensor = new LightSensor;
+        this.lightSensor = new LightSensor();
     }
 
     public void addLight(Light light) {
@@ -25,7 +28,7 @@ public class LightController {
     }
 
     public void round() {
-        this.controlLights;
+        controlLights();
 	}
 
     private void turnOnLights() {
