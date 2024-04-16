@@ -3,12 +3,16 @@ import java.awt.event.MouseAdapter;
 public class MoistureController {
 	private final double desiredMoisture;
 
-	private final WaterPump pump = new WaterPump();
+	private final WaterPump pump;
 	private final MoistureSensor sensor = new MoistureSensor();
-	private boolean issuedWarning = false;
+	private final NotificationController notificationController;
+	private final int tankIndex;
 
-	public MoistureController(double desiredMoisture) {
+	public MoistureController(NotificationController notificationController, double desiredMoisture, int tankIndex) {
+		this.pump = new WaterPump(tankIndex);
 		this.desiredMoisture = desiredMoisture;
+		this.notificationController = notificationController;
+		this.tankIndex = tankIndex;
 	}
 
 	public void round() {
@@ -24,15 +28,11 @@ public class MoistureController {
 	 */
 	public void checkWaterAvailable() {
 		if (pump.isFluidAvailable()) {
-			issuedWarning = false;
+			notificationController.resetWaterReservoirWarning(tankIndex);
 			return;
 		}
 
-		// issue warning if we're out of water
-		if (!issuedWarning) { // TODO emit notification event
-			System.out.println("Water is not available.");
-			issuedWarning = true;
-		}
+		notificationController.waterReservoirWarning(tankIndex, 0.0);
 	}
 
 	// FOR USE IN SIMULATION ONLY

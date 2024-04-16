@@ -15,12 +15,13 @@ public class NutrientController {
 	};
 
 	private NutrientSensor sensor = new NutrientSensor();
-
+	private final NotificationController notificationController;
 	private boolean issuedWarning = false;
 
-	public NutrientController(double desiredEC, int desiredFormula) {
+	public NutrientController(NotificationController notificationController, double desiredEC, int desiredFormula) {
 		this.desiredEC = desiredEC;
 		this.desiredFormula = desiredFormula;
+		this.notificationController = notificationController;
 	}
 
 	/**
@@ -31,22 +32,24 @@ public class NutrientController {
 			pumps[desiredFormula].start();
 		} else if (sensor.read() >= desiredEC && desiredFormula < MAX_PUMPS) {
 			pumps[desiredFormula].stop();
-		} else if (desiredFormula >= MAX_PUMPS) { // TODO emit notification event
-			System.out.println("Please supply plant with nutrients.");
+		} else if (desiredFormula >= MAX_PUMPS && sensor.read() < desiredEC) {
+			if (issuedWarning) {
+				notificationController.plantNeedsFertilizerWarning();
+				issuedWarning = true;
+			}
+		} else if (desiredFormula >= MAX_PUMPS) {
+			issuedWarning = false;
 		}
 	}
 
 	public void checkNutrientsAvailable() {
 		if (desiredFormula >= MAX_PUMPS || pumps[desiredFormula].isFluidAvailable()) {
-			issuedWarning = false;
+			notificationController.resetFertilizerReservoirWarning(desiredFormula);
 			return;
 		}
 
 		// issue warning if we're out of nutrients
-		if (!issuedWarning) { // TODO emit notification event
-			System.out.println("Nutrients are not available.");
-			issuedWarning = true;
-		}
+		notificationController.fertilizerReservoirWarning(desiredFormula, 0.0);
 	}
 
 	// FOR USE IN SIMULATION ONLY

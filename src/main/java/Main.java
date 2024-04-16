@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Main {
+    private static javax.swing.Timer updateTimer = null;
+
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("Simulation UI");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -14,10 +16,14 @@ public class Main {
         frame.setVisible(true);
 
         simulationUI.update();
+
+        updateTimer = new Timer(1000, e -> {
+            simulationUI.update();
+        });
+        updateTimer.start();
     }
 
     public static void main(String[] args) {
-        new SimulationUI();
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createAndShowGUI();

@@ -5,6 +5,8 @@ import java.util.Arrays;
 
 
 public class SimulationUI {
+    public static SimulationUI simulationUI;
+
     private ArrayList<SimulationTank> waterTanks = new ArrayList<>(Arrays.asList(
         new SimulationTank(),
         new SimulationTank(),
@@ -19,7 +21,7 @@ public class SimulationUI {
         new SimulationTank()
     ));
 
-    public ControlUnit controlUnit = new ControlUnit();
+    public final ControlUnit controlUnit;
 
     public JPanel parent;
 
@@ -30,8 +32,14 @@ public class SimulationUI {
     private JPanel moistureControllerList;
     private JPanel fertilizerControllerList;
     private JLabel lightControllerStatus;
+    private JTextPane notificationArea;
+    private String notificationMessages = "";
 
     public SimulationUI() {
+        simulationUI = this;
+
+        controlUnit = new ControlUnit();
+
         waterTankList.setLayout(new GridLayout(1, 0, 10, 10));
         waterTankLabels.setLayout(new GridLayout(1, 0, 10, 10));
 
@@ -52,8 +60,16 @@ public class SimulationUI {
         updateLightController();
     }
 
+    public void addNotification(String message) {
+        notificationMessages += message + "\n";
+        notificationArea.setText(notificationMessages);
+        notificationArea.validate();
+        notificationArea.repaint();
+    }
+
     private void updateWaterTankList() {
         waterTankList.removeAll();
+        waterTankLabels.removeAll();
 
         for (int i = 0; i < waterTanks.size(); i++) {
             SimulationTank waterTank = waterTanks.get(i);
@@ -64,18 +80,21 @@ public class SimulationUI {
             progressBar.setMaximum(100);
 
             waterTankList.add(progressBar);
-            waterTankList.validate();
-            waterTankList.repaint();
-
             waterTankLabels.add(new JLabel("Water tank #" + (i + 1)));
         }
+
+        waterTankList.validate();
+        waterTankList.repaint();
+        waterTankLabels.validate();
+        waterTankLabels.repaint();
     }
 
     private void updateFertilizerTankList() {
         fertilizerTankList.removeAll();
+        fertilizerTankLabels.removeAll();
 
-        for (int i = 0; i < waterTanks.size(); i++) {
-            SimulationTank waterTank = waterTanks.get(i);
+        for (int i = 0; i < fertilizerTanks.size(); i++) {
+            SimulationTank waterTank = fertilizerTanks.get(i);
 
             JProgressBar progressBar = new JProgressBar();
             progressBar.setOrientation(SwingConstants.VERTICAL);
@@ -83,14 +102,18 @@ public class SimulationUI {
             progressBar.setMaximum(100);
 
             fertilizerTankList.add(progressBar);
-            fertilizerTankList.validate();
-            fertilizerTankList.repaint();
-
             fertilizerTankLabels.add(new JLabel("Fertilizer tank #" + (i + 1)));
         }
+
+        fertilizerTankList.validate();
+        fertilizerTankList.repaint();
+        fertilizerTankLabels.validate();
+        fertilizerTankLabels.repaint();
     }
 
     private void updateMoistureControllerList() {
+        moistureControllerList.removeAll();
+
         for (int i = 0; i < controlUnit.moistureControllers.size(); i++) {
             MoistureController controller = controlUnit.moistureControllers.get(i);
 
@@ -104,6 +127,8 @@ public class SimulationUI {
     }
 
     private void updateNutrientControllerList() {
+        fertilizerControllerList.removeAll();
+
         for (int i = 0; i < controlUnit.nutrientControllers.size(); i++) {
             NutrientController controller = controlUnit.nutrientControllers.get(i);
 
