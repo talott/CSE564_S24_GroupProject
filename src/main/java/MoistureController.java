@@ -16,7 +16,7 @@ public class MoistureController {
 	}
 
 	public void round() {
-		if (sensor.read() < desiredMoisture && pump.isFluidAvailable()) {
+		if (sensor.read() < desiredMoisture && pump.getFluidAvailable() > 0.01) {
 			pump.start();
 		} else {
 			pump.stop();
@@ -27,7 +27,7 @@ public class MoistureController {
 	 * Returns true if the moisture control has water available to water plants. If water is not available, then the MoistureController will issue a notification to the user reminding them to fill their water tanks.
 	 */
 	public void checkWaterAvailable() {
-		if (pump.isFluidAvailable()) {
+		if (pump.getFluidAvailable() > 0.01) {
 			notificationController.resetWaterReservoirWarning(tankIndex);
 			return;
 		}

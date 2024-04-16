@@ -28,7 +28,7 @@ public class NutrientController {
 	 * If the sensor reports that the plants need nutrients, then the controller will activate the plants' desired NutrientPump. If the plants' need nutrients and their desired formula is not available from one of the NutrientPumps, then a notification is issued to the user to remind them to fertilize their plants.
 	 */
 	public void round() {
-		if (sensor.read() < desiredEC && desiredFormula < MAX_PUMPS && pumps[desiredFormula].isFluidAvailable()) {
+		if (sensor.read() < desiredEC && desiredFormula < MAX_PUMPS && pumps[desiredFormula].getFluidAvailable() > 0.01) {
 			pumps[desiredFormula].start();
 		} else if (sensor.read() >= desiredEC && desiredFormula < MAX_PUMPS) {
 			pumps[desiredFormula].stop();
@@ -43,7 +43,7 @@ public class NutrientController {
 	}
 
 	public void checkNutrientsAvailable() {
-		if (desiredFormula >= MAX_PUMPS || pumps[desiredFormula].isFluidAvailable()) {
+		if (desiredFormula >= MAX_PUMPS || pumps[desiredFormula].getFluidAvailable() > 0.01) {
 			notificationController.resetFertilizerReservoirWarning(desiredFormula);
 			return;
 		}

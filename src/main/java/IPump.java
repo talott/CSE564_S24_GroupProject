@@ -11,8 +11,8 @@ public interface IPump {
 	public abstract void stop();
 
 	/**
-	 * Returns true if there's enough fluid available to start pumping.
+	 * Returns the percentage of the fluid that is available to the pump.
 	 */
-	public abstract boolean isFluidAvailable();
+	public abstract double getFluidAvailable();
 
 }

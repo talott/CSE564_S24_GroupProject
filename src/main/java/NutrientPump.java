@@ -12,8 +12,8 @@ public class NutrientPump {
 		isRunning = false;
 	}
 
-	public boolean isFluidAvailable() {
-		return true;
+	public double getFluidAvailable() {
+		return 0.0;
 	}
 
 }

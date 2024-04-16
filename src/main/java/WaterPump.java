@@ -29,7 +29,7 @@ public class WaterPump implements IPump {
 		isRunning = false;
 	}
 
-	public boolean isFluidAvailable() { // TODO track water remaining
-		return false;
+	public double getFluidAvailable() { // TODO track water remaining
+		return 0.0;
 	}
 }
