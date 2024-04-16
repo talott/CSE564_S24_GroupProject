@@ -1,11 +1,15 @@
+import java.awt.event.MouseAdapter;
+
 public class MoistureController {
-	private double desiredMoisture;
+	private final double desiredMoisture;
 
-	private WaterPump pump;
-
-	private MoistureSensor sensor;
-
+	private final WaterPump pump = new WaterPump();
+	private final MoistureSensor sensor = new MoistureSensor();
 	private boolean issuedWarning = false;
+
+	public MoistureController(double desiredMoisture) {
+		this.desiredMoisture = desiredMoisture;
+	}
 
 	public void round() {
 		if (sensor.read() < desiredMoisture && pump.isFluidAvailable()) {
@@ -29,5 +33,10 @@ public class MoistureController {
 			System.out.println("Water is not available.");
 			issuedWarning = true;
 		}
+	}
+
+	// FOR USE IN SIMULATION ONLY
+	public boolean isPumpActive() {
+		return pump.isRunning;
 	}
 }

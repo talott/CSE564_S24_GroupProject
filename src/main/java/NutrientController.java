@@ -14,9 +14,14 @@ public class NutrientController {
 			new NutrientPump()
 	};
 
-	private NutrientSensor sensor;
+	private NutrientSensor sensor = new NutrientSensor();
 
 	private boolean issuedWarning = false;
+
+	public NutrientController(double desiredEC, int desiredFormula) {
+		this.desiredEC = desiredEC;
+		this.desiredFormula = desiredFormula;
+	}
 
 	/**
 	 * If the sensor reports that the plants need nutrients, then the controller will activate the plants' desired NutrientPump. If the plants' need nutrients and their desired formula is not available from one of the NutrientPumps, then a notification is issued to the user to remind them to fertilize their plants.
@@ -42,5 +47,16 @@ public class NutrientController {
 			System.out.println("Nutrients are not available.");
 			issuedWarning = true;
 		}
+	}
+
+	// FOR USE IN SIMULATION ONLY
+	public int getPumpActive() {
+		for (int i = 0; i < pumps.length; i++) {
+			if (pumps[i].isRunning) {
+				return i;
+			}
+		}
+
+		return -1;
 	}
 }

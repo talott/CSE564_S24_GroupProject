@@ -6,6 +6,9 @@ public class LightController {
     private List<Light> lights;
     private ISensor lightSensor;
 
+    // FOR USE IN SIMULATION ONLY
+    public boolean isLightsOn = false;
+
     public LightController(double desiredLightLevel) {
         this.desiredLightLevel = desiredLightLevel;
         this.lights = new ArrayList<>();
@@ -43,6 +46,8 @@ public class LightController {
             }
             index++;
         }
+
+        isLightsOn = true;
     }
 
     private void turnOffLights() {
@@ -57,5 +62,7 @@ public class LightController {
             }
             index++;
         }
+
+        isLightsOn = false;
     }
 }

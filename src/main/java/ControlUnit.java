@@ -1,15 +1,32 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ControlUnit {
-    private List<MoistureController> moistureControllers;
-    private List<NutrientController> nutrientControllers;
-    private LightController lightController;
-    private int desiredLightHours;
+    public List<MoistureController> moistureControllers;
+    public List<NutrientController> nutrientControllers;
+    public LightController lightController;
+    private int desiredLightHours = 0;
 
     public ControlUnit() {
-        moistureControllers = new ArrayList<>();
-        nutrientControllers = new ArrayList<>();
+        moistureControllers = new ArrayList<>(Arrays.asList(
+            new MoistureController(0.0),
+            new MoistureController(0.1),
+            new MoistureController(0.2),
+            new MoistureController(0.3),
+            new MoistureController(0.4)
+        ));
+        nutrientControllers = new ArrayList<>(Arrays.asList(
+            new NutrientController(0.1, 0),
+            new NutrientController(0.2, 1),
+            new NutrientController(0.3, 2),
+            new NutrientController(0.4, 3),
+            new NutrientController(0.5, 4),
+            new NutrientController(0.6, 5),
+            new NutrientController(0.7, 6)
+        ));
+
+        lightController = new LightController(desiredLightHours);
     }
 
     public void controlUnit() {
