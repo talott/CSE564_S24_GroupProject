@@ -18,8 +18,8 @@ public class ControlUnit {
             new MoistureController(notificationController, 0.0, 0),
             new MoistureController(notificationController, 0.1, 0),
             new MoistureController(notificationController, 0.2, 0),
-            new MoistureController(notificationController, 0.3, 0),
-            new MoistureController(notificationController, 0.4, 0)
+            new MoistureController(notificationController, 0.3, 1),
+            new MoistureController(notificationController, 0.4, 1)
         ));
         nutrientControllers = new ArrayList<>(Arrays.asList(
             new NutrientController(notificationController, 0.1, 0),

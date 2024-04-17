@@ -35,7 +35,7 @@ public class NutrientController {
 			pumps[desiredFormula].stop();
 			sensor.decrementValue();
 		} else if (desiredFormula >= MAX_PUMPS && sensor.read() < desiredEC) {
-			if (issuedWarning) {
+			if (!issuedWarning) {
 				notificationController.plantNeedsFertilizerWarning();
 				issuedWarning = true;
 			}
