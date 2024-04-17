@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Array;
 import java.util.*;
 
 
@@ -22,7 +23,7 @@ public class SimulationUI {
     private JTextPane notificationArea;
     private JButton resetWaterTankLevelsButton;
     private JButton resetFertilizerTankLevelsButton;
-    private String notificationMessages = "";
+    private final ArrayList<String> notificationMessages = new ArrayList<>();
 
     public SimulationUI() {
         simulationUI = this;
@@ -50,8 +51,17 @@ public class SimulationUI {
     }
 
     public void addNotification(String message) {
-        notificationMessages += message + "\n";
-        notificationArea.setText(notificationMessages);
+        notificationMessages.add(message);
+        renderNotifications();
+    }
+
+    private void renderNotifications() {
+        String bigMessage = "";
+        for (String message: notificationMessages) {
+            bigMessage += message + "\n";
+        }
+
+        notificationArea.setText(bigMessage);
         notificationArea.validate();
         notificationArea.repaint();
     }
@@ -91,6 +101,13 @@ public class SimulationUI {
                 for (MoistureController controller: controlUnit.moistureControllers) {
                     controller.resetTank();
                 }
+
+                for (int i = notificationMessages.size() - 1; i >= 0; i--) {
+                    if (notificationMessages.get(i).contains("Water is not available")) {
+                        notificationMessages.remove(i);
+                    }
+                }
+                renderNotifications();
             }
         });
     }
@@ -133,6 +150,13 @@ public class SimulationUI {
                 for (NutrientController controller: controlUnit.nutrientControllers) {
                     controller.resetTanks();
                 }
+
+                for (int i = notificationMessages.size() - 1; i >= 0; i--) {
+                    if (notificationMessages.get(i).contains("Fertilizer is not available")) {
+                        notificationMessages.remove(i);
+                    }
+                }
+                renderNotifications();
             }
         });
     }
