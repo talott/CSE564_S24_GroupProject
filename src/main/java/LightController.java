@@ -65,4 +65,9 @@ public class LightController {
 
         isLightsOn = false;
     }
+
+    // FOR USE IN SIMULATION ONLY
+    public double getLux() {
+        return lightSensor.read();
+    }
 }

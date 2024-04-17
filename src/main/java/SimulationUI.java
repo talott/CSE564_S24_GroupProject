@@ -155,6 +155,9 @@ public class SimulationUI {
     }
 
     private void updateLightController() {
-        lightControllerStatus.setText("Light controller: " + (controlUnit.lightController.isLightsOn ? "Active" : "Inactive"));
+        lightControllerStatus.setText("Light controller: "
+            + "Sensor reads " + (int)(controlUnit.lightController.getLux() * 100) + " , "
+            + (controlUnit.lightController.isLightsOn ? "Active" : "Inactive")
+        );
     }
 }

@@ -16,7 +16,6 @@ public class NutrientController {
 
 	private NutrientSensor sensor = new NutrientSensor();
 	private final NotificationController notificationController;
-	private boolean issuedWarning = false;
 
 	public NutrientController(NotificationController notificationController, double desiredEC, int desiredFormula) {
 		this.desiredEC = desiredEC;
@@ -35,13 +34,11 @@ public class NutrientController {
 			pumps[desiredFormula].stop();
 			sensor.decrementValue();
 		} else if (desiredFormula >= MAX_PUMPS && sensor.read() < desiredEC) {
-			if (!issuedWarning) {
-				notificationController.plantNeedsFertilizerWarning();
-				issuedWarning = true;
-			}
+			notificationController.plantNeedsManualFertilizing(desiredFormula - MAX_PUMPS);
 			sensor.decrementValue();
 		} else if (desiredFormula >= MAX_PUMPS) {
-			issuedWarning = false;
+			notificationController.resetPlantNeedsManualFertilizing(desiredFormula - MAX_PUMPS);
+			sensor.decrementValue();
 		}
 	}
 
@@ -52,7 +49,7 @@ public class NutrientController {
 		}
 
 		// issue warning if we're out of nutrients
-		notificationController.fertilizerReservoirWarning(desiredFormula, 0.0);
+		notificationController.fertilizerReservoirWarning(desiredFormula);
 	}
 
 	// FOR USE IN SIMULATION ONLY

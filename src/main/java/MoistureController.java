@@ -34,7 +34,7 @@ public class MoistureController {
 			return;
 		}
 
-		notificationController.waterReservoirWarning(tankIndex, 0.0);
+		notificationController.waterReservoirWarning(tankIndex);
 	}
 
 	// FOR USE IN SIMULATION ONLY

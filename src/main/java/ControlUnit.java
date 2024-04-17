@@ -28,7 +28,7 @@ public class ControlUnit {
             new NutrientController(notificationController, 0.4, 3),
             new NutrientController(notificationController, 0.5, 4),
             new NutrientController(notificationController, 0.6, 5),
-            new NutrientController(notificationController, 0.7, 6)
+            new NutrientController(notificationController, 0.2, 6)
         ));
 
         lightController = new LightController(desiredLightHours);
@@ -47,8 +47,8 @@ public class ControlUnit {
         // Moisture control round
         for (MoistureController moistureController : moistureControllers) {
             executor.submit(() -> {
-                moistureController.checkWaterAvailable();
                 moistureController.round();
+                moistureController.checkWaterAvailable();
             });
             
         }
@@ -56,8 +56,8 @@ public class ControlUnit {
         // Nutrient control round
         for (NutrientController nutrientController : nutrientControllers) {
             executor.submit(() -> {
-                nutrientController.checkNutrientsAvailable();
                 nutrientController.round();
+                nutrientController.checkNutrientsAvailable();
             });
         }
 
