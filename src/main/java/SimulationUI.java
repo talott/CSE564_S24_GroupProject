@@ -1,25 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 
 public class SimulationUI {
     public static SimulationUI simulationUI;
-
-    private ArrayList<SimulationTank> waterTanks = new ArrayList<>(Arrays.asList(
-        new SimulationTank(),
-        new SimulationTank(),
-        new SimulationTank(),
-        new SimulationTank()
-    ));
-
-    private ArrayList<SimulationTank> fertilizerTanks = new ArrayList<>(Arrays.asList(
-        new SimulationTank(),
-        new SimulationTank(),
-        new SimulationTank(),
-        new SimulationTank()
-    ));
 
     public final ControlUnit controlUnit;
 
@@ -71,16 +56,20 @@ public class SimulationUI {
         waterTankList.removeAll();
         waterTankLabels.removeAll();
 
-        for (int i = 0; i < waterTanks.size(); i++) {
-            SimulationTank waterTank = waterTanks.get(i);
+        Map<Integer, Double> capacityMapping = new TreeMap<>();
 
+        for (MoistureController controller: controlUnit.moistureControllers) {
+            capacityMapping.putIfAbsent(controller.getTankIndex(), controller.getCapacity());
+        }
+
+        for (Map.Entry<Integer, Double> entry: capacityMapping.entrySet()) {
             JProgressBar progressBar = new JProgressBar();
             progressBar.setOrientation(SwingConstants.VERTICAL);
-            progressBar.setValue((int)(waterTank.available * 100.0));
+            progressBar.setValue((int)(entry.getValue() * 100.0));
             progressBar.setMaximum(100);
 
             waterTankList.add(progressBar);
-            waterTankLabels.add(new JLabel("Water tank #" + (i + 1)));
+            waterTankLabels.add(new JLabel("Water tank #" + (entry.getKey() + 1)));
         }
 
         waterTankList.validate();
@@ -93,16 +82,24 @@ public class SimulationUI {
         fertilizerTankList.removeAll();
         fertilizerTankLabels.removeAll();
 
-        for (int i = 0; i < fertilizerTanks.size(); i++) {
-            SimulationTank waterTank = fertilizerTanks.get(i);
+        Map<Integer, Double> capacityMapping = new TreeMap<>();
 
+        for (NutrientController controller: controlUnit.nutrientControllers) {
+            if (controller.getTankIndex() >= 6) {
+                continue;
+            }
+
+            capacityMapping.putIfAbsent(controller.getTankIndex(), controller.getCapacity());
+        }
+
+        for (Map.Entry<Integer, Double> entry: capacityMapping.entrySet()) {
             JProgressBar progressBar = new JProgressBar();
             progressBar.setOrientation(SwingConstants.VERTICAL);
-            progressBar.setValue((int)(waterTank.available * 100.0));
+            progressBar.setValue((int)(entry.getValue() * 100.0));
             progressBar.setMaximum(100);
 
             fertilizerTankList.add(progressBar);
-            fertilizerTankLabels.add(new JLabel("Fertilizer tank #" + (i + 1)));
+            fertilizerTankLabels.add(new JLabel("Nutrient tank #" + (entry.getKey() + 1)));
         }
 
         fertilizerTankList.validate();
@@ -118,7 +115,10 @@ public class SimulationUI {
             MoistureController controller = controlUnit.moistureControllers.get(i);
 
             moistureControllerList.add(
-                new JLabel("Moisture Controller Pump #" + (i + 1) + ": " + (controller.isPumpActive() ? "Active" : "Inactive"))
+                new JLabel("Moisture Controller #" + (i + 1) + ": "
+                        + "Sensor reads " + (int)(controller.getSensor() * 100) + "%, "
+                    + (controller.isPumpActive() ? "Pump active" : "Pump inactive")
+                )
             );
         }
 
@@ -133,15 +133,18 @@ public class SimulationUI {
             NutrientController controller = controlUnit.nutrientControllers.get(i);
 
             int activePump = controller.getPumpActive();
-            String pumpText = "";
+            String pumpText;
             if (activePump == -1) {
-                pumpText = "Inactive";
+                pumpText = "Pump inactive";
             } else {
-                pumpText = "#" + activePump + " active";
+                pumpText = "Pump #" + activePump + " active";
             }
 
             fertilizerControllerList.add(
-                new JLabel("Nutrient Controller Pump #" + (i + 1) + ": " + pumpText)
+                new JLabel("Nutrient Controller Pump #" + (i + 1) + ": "
+                    + "Sensor reads " + (int)(controller.getSensor() * 100) + "%, "
+                    + pumpText
+                )
             );
         }
 

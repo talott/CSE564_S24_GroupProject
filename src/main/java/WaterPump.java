@@ -1,3 +1,5 @@
+import java.util.concurrent.ConcurrentHashMap;
+
 public class WaterPump implements IPump {
 	/**
 	 * The tank the pump is pulling water from.
@@ -7,7 +9,8 @@ public class WaterPump implements IPump {
 	// FOR USE IN SIMULATION ONLY
 	public boolean isRunning = false;
 
-	private double fluidAvailable = 1.0;
+	// FOR USE IN SIMULATION ONLY
+	private static ConcurrentHashMap<Integer, Double> fluidAvailable = new ConcurrentHashMap<>();
 
 	public WaterPump(int tankIndex) {
 		this.tankIndex = tankIndex;
@@ -17,7 +20,9 @@ public class WaterPump implements IPump {
 		if (!isRunning) {
 			System.out.println("Started water pump #" + tankIndex); // TODO remove print statement?
 		}
-		fluidAvailable -= 0.1;
+
+		fluidAvailable.put(tankIndex, fluidAvailable.getOrDefault(tankIndex, 1.0) - 0.1);
+
 		isRunning = true;
 	}
 
@@ -30,6 +35,6 @@ public class WaterPump implements IPump {
 	}
 
 	public double getFluidAvailable() { // TODO track water remaining
-		return fluidAvailable;
+		return fluidAvailable.getOrDefault(tankIndex, 1.0);
 	}
 }

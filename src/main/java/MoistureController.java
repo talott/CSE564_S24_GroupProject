@@ -41,4 +41,19 @@ public class MoistureController {
 	public boolean isPumpActive() {
 		return pump.isRunning;
 	}
+
+	// FOR USE IN SIMULATION ONLY
+	public double getSensor() {
+		return sensor.read();
+	}
+
+	// FOR USE IN SIMULATION ONLY
+	public double getCapacity() {
+		return pump.getFluidAvailable();
+	}
+
+	// FOR USE IN SIMULATION ONLY
+	public int getTankIndex() {
+		return tankIndex;
+	}
 }

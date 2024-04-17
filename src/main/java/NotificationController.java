@@ -13,7 +13,7 @@ public class NotificationController {
 
         waterWarningsIssued.putIfAbsent(reservoirIndex, true);
 
-        String message = "Water is not available in tank #" + reservoirIndex;
+        String message = "Water is not available in tank #" + (reservoirIndex + 1);
         System.out.println(message);
 
         if (SimulationUI.simulationUI != null) {
@@ -32,7 +32,7 @@ public class NotificationController {
 
         fertilizerWarningsIssued.putIfAbsent(reservoirIndex, true);
 
-        String message = "Fertilizer is not available in tank #" + reservoirIndex;
+        String message = "Fertilizer is not available in tank #" + (reservoirIndex + 1);
         System.out.println(message);
 
         if (SimulationUI.simulationUI != null) {

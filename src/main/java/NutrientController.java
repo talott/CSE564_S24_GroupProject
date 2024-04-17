@@ -65,4 +65,19 @@ public class NutrientController {
 
 		return -1;
 	}
+
+	// FOR USE IN SIMULATION ONLY
+	public double getSensor() {
+		return sensor.read();
+	}
+
+	// FOR USE IN SIMULATION ONLY
+	public double getCapacity() {
+		return pumps[desiredFormula].getFluidAvailable();
+	}
+
+	// FOR USE IN SIMULATION ONLY
+	public int getTankIndex() {
+		return desiredFormula;
+	}
 }
