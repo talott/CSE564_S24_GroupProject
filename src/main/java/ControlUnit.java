@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class ControlUnit {
     public List<MoistureController> moistureControllers;
@@ -32,28 +35,43 @@ public class ControlUnit {
     }
 
     public void controlUnit() {
-        double[] moistureSensorReadings = {0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1};
-        double[] electricalConductivitySensorReadings = {3, 3, 3, 3, 3, 3, 3};
-        double[] lightLuxValueReadings = {100, 102, 95, 65, 74, 99, 105};
+        //double[] moistureSensorReadings = {0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1};
+        //double[] electricalConductivitySensorReadings = {3, 3, 3, 3, 3, 3, 3};
+        //double[] lightLuxValueReadings = {100, 102, 95, 65, 74, 99, 105};
 
-        List<Double> plantWaterOutput = new ArrayList<>();
-        List<Double> plantFormulaOutput = new ArrayList<>();
+        //List<Double> plantWaterOutput = new ArrayList<>();
+        //List<Double> plantFormulaOutput = new ArrayList<>();
+
+        ExecutorService executor = Executors.newFixedThreadPool(moistureControllers.size() + nutrientControllers.size() + 1);
 
         // Moisture control round
         for (MoistureController moistureController : moistureControllers) {
-            moistureController.checkWaterAvailable();
-            moistureController.round();
+            executor.submit(() -> {
+                moistureController.checkWaterAvailable();
+                moistureController.round();
+            });
+            
         }
 
         // Nutrient control round
         for (NutrientController nutrientController : nutrientControllers) {
-            nutrientController.checkNutrientsAvailable();
-            nutrientController.round();
+            executor.submit(() -> {
+                nutrientController.checkNutrientsAvailable();
+                nutrientController.round();
+            });
         }
 
         // Light control round
-        
-        lightController.round();
+        executor.submit(() -> {
+            lightController.round();
+        });
+
+        executor.shutdown();
+        try {
+            executor.awaitTermination(10, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void changeSettings() {
