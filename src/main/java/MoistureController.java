@@ -52,6 +52,9 @@ public class MoistureController {
 		return pump.getFluidAvailable();
 	}
 
+	// FOR USE IN SIMULATION ONLU
+	public void resetTank() {pump.resetFluidAvailable();}
+
 	// FOR USE IN SIMULATION ONLY
 	public int getTankIndex() {
 		return tankIndex;

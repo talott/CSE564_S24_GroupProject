@@ -35,12 +35,6 @@ public class ControlUnit {
     }
 
     public void controlUnit() {
-        double[] moistureSensorReadings = {0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1};
-        double[] electricalConductivitySensorReadings = {3, 3, 3, 3, 3, 3, 3};
-        double[] lightLuxValueReadings = {100, 102, 95, 65, 74, 99, 105};
-
-        List<Double> plantWaterOutput = new ArrayList<>();
-        List<Double> plantFormulaOutput = new ArrayList<>();
 
         ExecutorService executor = Executors.newFixedThreadPool(moistureControllers.size() + nutrientControllers.size() + 1);
 

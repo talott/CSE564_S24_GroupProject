@@ -73,6 +73,13 @@ public class NutrientController {
 		return pumps[desiredFormula].getFluidAvailable();
 	}
 
+	// FOR USE IN SIMULATION ONLU
+	public void resetTanks() {
+		for (int i = 0; i < pumps.length; i++) {
+			pumps[i].resetFluidAvailable();
+		}
+	}
+
 	// FOR USE IN SIMULATION ONLY
 	public int getTankIndex() {
 		return desiredFormula;

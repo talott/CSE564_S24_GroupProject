@@ -24,7 +24,7 @@ public class LightController {
         if (currentLightLevel < desiredLightLevel) {
             // If current light level is below desired, turn on lights
             turnOnLights();
-        } else {
+        } else if (currentLightLevel > desiredLightLevel){
             // If current light level is equal or above desired, turn off lights
             turnOffLights();
         }

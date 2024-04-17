@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
 
 
@@ -60,6 +62,8 @@ public class SimulationUI {
 
         Map<Integer, Double> capacityMapping = new TreeMap<>();
 
+        setResetWaterTankLevelsButton();
+
         for (MoistureController controller: controlUnit.moistureControllers) {
             capacityMapping.putIfAbsent(controller.getTankIndex(), controller.getCapacity());
         }
@@ -80,9 +84,22 @@ public class SimulationUI {
         waterTankLabels.repaint();
     }
 
+    private void setResetWaterTankLevelsButton() {
+        //resetWaterTankLevelsButton = new JButton("Reset Water Tank Levels");
+        resetWaterTankLevelsButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                for (MoistureController controller: controlUnit.moistureControllers) {
+                    controller.resetTank();
+                }
+            }
+        });
+    }
+
     private void updateFertilizerTankList() {
         fertilizerTankList.removeAll();
         fertilizerTankLabels.removeAll();
+
+        setResetFertilizerTankLevelsButton();
 
         Map<Integer, Double> capacityMapping = new TreeMap<>();
 
@@ -108,6 +125,16 @@ public class SimulationUI {
         fertilizerTankList.repaint();
         fertilizerTankLabels.validate();
         fertilizerTankLabels.repaint();
+    }
+
+    private void setResetFertilizerTankLevelsButton() {
+        resetFertilizerTankLevelsButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                for (NutrientController controller: controlUnit.nutrientControllers) {
+                    controller.resetTanks();
+                }
+            }
+        });
     }
 
     private void updateMoistureControllerList() {

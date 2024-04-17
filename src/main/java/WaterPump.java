@@ -37,4 +37,8 @@ public class WaterPump implements IPump {
 	public double getFluidAvailable() { // TODO track water remaining
 		return fluidAvailable.getOrDefault(tankIndex, 1.0);
 	}
+
+	public void resetFluidAvailable() {
+		this.fluidAvailable.put(tankIndex, 1.0);
+	}
 }

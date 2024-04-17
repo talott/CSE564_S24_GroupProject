@@ -34,4 +34,9 @@ public class NutrientPump {
 		return fluidAvailable.getOrDefault(formulaIndex, 1.0);
 	}
 
+
+	public void resetFluidAvailable() {
+		this.fluidAvailable.put(formulaIndex, 1.0);
+	}
+
 }
