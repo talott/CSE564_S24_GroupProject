@@ -18,6 +18,8 @@ public class SimulationUI {
     private JPanel fertilizerControllerList;
     private JLabel lightControllerStatus;
     private JTextPane notificationArea;
+    private JButton resetWaterTankLevelsButton;
+    private JButton resetFertilizerTankLevelsButton;
     private String notificationMessages = "";
 
     public SimulationUI() {
