@@ -16,10 +16,12 @@ public class MoistureController {
 	}
 
 	public void round() {
-		if (sensor.read() < desiredMoisture && pump.getFluidAvailable() > 0.01) {
+		if (sensor.read() < desiredMoisture && pump.getFluidAvailable() > 0.0) {
 			pump.start();
+			sensor.incrementValue();
 		} else {
 			pump.stop();
+			sensor.decrementValue();
 		}
 	}
 

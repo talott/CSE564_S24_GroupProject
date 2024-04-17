@@ -6,12 +6,12 @@ public class NutrientController {
 	private double desiredEC;
 
 	private NutrientPump[] pumps = {
-			new NutrientPump(),
-			new NutrientPump(),
-			new NutrientPump(),
-			new NutrientPump(),
-			new NutrientPump(),
-			new NutrientPump()
+			new NutrientPump(0),
+			new NutrientPump(1),
+			new NutrientPump(2),
+			new NutrientPump(3),
+			new NutrientPump(4),
+			new NutrientPump(5)
 	};
 
 	private NutrientSensor sensor = new NutrientSensor();
@@ -30,13 +30,16 @@ public class NutrientController {
 	public void round() {
 		if (sensor.read() < desiredEC && desiredFormula < MAX_PUMPS && pumps[desiredFormula].getFluidAvailable() > 0.01) {
 			pumps[desiredFormula].start();
+			sensor.incrementValue();
 		} else if (sensor.read() >= desiredEC && desiredFormula < MAX_PUMPS) {
 			pumps[desiredFormula].stop();
+			sensor.decrementValue();
 		} else if (desiredFormula >= MAX_PUMPS && sensor.read() < desiredEC) {
 			if (issuedWarning) {
 				notificationController.plantNeedsFertilizerWarning();
 				issuedWarning = true;
 			}
+			sensor.decrementValue();
 		} else if (desiredFormula >= MAX_PUMPS) {
 			issuedWarning = false;
 		}
