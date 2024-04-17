@@ -1,11 +1,12 @@
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class NotificationController {
-    private final HashMap<Integer, Boolean> waterWarningsIssued = new HashMap<>();
-    private final HashMap<Integer, Boolean> fertilizerWarningsIssued = new HashMap<>();
+    private final ConcurrentHashMap<Integer, Boolean> waterWarningsIssued = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<Integer, Boolean> fertilizerWarningsIssued = new ConcurrentHashMap<>();
 
-    public void waterReservoirWarning(int reservoirIndex, double percentLeft) {
+    public synchronized void waterReservoirWarning(int reservoirIndex, double percentLeft) {
         if (waterWarningsIssued.containsKey(reservoirIndex)) {
             return;
         }
@@ -20,11 +21,11 @@ public class NotificationController {
         }
     }
 
-    public void resetWaterReservoirWarning(int reservoirIndex) {
+    public synchronized void resetWaterReservoirWarning(int reservoirIndex) {
         waterWarningsIssued.remove(reservoirIndex);
     }
 
-    public void fertilizerReservoirWarning(int reservoirIndex, double percentLeft) {
+    public synchronized void fertilizerReservoirWarning(int reservoirIndex, double percentLeft) {
         if (fertilizerWarningsIssued.containsKey(reservoirIndex)) {
             return;
         }
@@ -39,11 +40,11 @@ public class NotificationController {
         }
     }
 
-    public void resetFertilizerReservoirWarning(int reservoirIndex) {
+    public synchronized void resetFertilizerReservoirWarning(int reservoirIndex) {
         fertilizerWarningsIssued.remove(reservoirIndex);
     }
 
-    public void plantNeedsFertilizerWarning() {
+    public synchronized void plantNeedsFertilizerWarning() {
         String message = "Fertilizer is needed by controller #TODO";
         System.out.println(message);
 
