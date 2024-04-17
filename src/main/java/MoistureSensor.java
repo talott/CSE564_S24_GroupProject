@@ -21,7 +21,11 @@ public class MoistureSensor implements ISensor {
 
 	public void decrementValue()
 	{
-		if (new Random().nextBoolean() && value != 0.0)
+		if(value<0)
+		{
+			value=0;
+		}
+		if (new Random().nextBoolean() && value >= 0.1)
 		{
 			value-=0.1;
 		}
