@@ -1,6 +1,6 @@
 import java.util.concurrent.ConcurrentHashMap;
 
-public class NutrientPump {
+public class NutrientPump implements IPump{
 	public int formulaIndex;
 
 	// FOR USE IN SIMULATION ONLY
