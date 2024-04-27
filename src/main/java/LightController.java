@@ -4,10 +4,7 @@ import java.util.List;
 public class LightController {
     private double desiredLightLevel;
     private List<Light> lights;
-    private ISensor lightSensor;
-
-    // FOR USE IN SIMULATION ONLY
-    public boolean isLightsOn = false;
+    private LightSensor lightSensor;
 
     public LightController(double desiredLightLevel) {
         this.desiredLightLevel = desiredLightLevel;
@@ -20,6 +17,8 @@ public class LightController {
     }
 
     private void controlLights() {
+        lightSensor.incrementTimesRead();
+
         double currentLightLevel = lightSensor.read();
         if (currentLightLevel < desiredLightLevel) {
             // If current light level is below desired, turn on lights
@@ -42,32 +41,35 @@ public class LightController {
             Light light = lights.get(index);
             if (!light.isOn()) {
                 light.turnOn();
+                lightSensor.numberOfLightsActive++;
                 currentLightLevel = lightSensor.read();
             }
             index++;
         }
-
-        isLightsOn = true;
     }
 
     private void turnOffLights() {
         int index = 0;
         double currentLightLevel = lightSensor.read();
 
-        while (index < lights.size() && currentLightLevel >= desiredLightLevel) {
+        while (index < lights.size() && currentLightLevel > desiredLightLevel) {
             Light light = lights.get(index);
             if (light.isOn()) {
                 light.turnOff();
+                lightSensor.numberOfLightsActive--;
                 currentLightLevel = lightSensor.read();
             }
             index++;
         }
-
-        isLightsOn = false;
     }
 
     // FOR USE IN SIMULATION ONLY
     public double getLux() {
         return lightSensor.read();
+    }
+
+    // FOR USE IN SIMULATION ONLY
+    public int getNumberOfLightsActive() {
+        return lightSensor.numberOfLightsActive;
     }
 }

@@ -29,6 +29,5 @@ public class MoistureSensor implements ISensor {
 		{
 			value-=0.1;
 		}
-
 	}
 }

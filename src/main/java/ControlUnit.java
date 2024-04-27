@@ -11,8 +11,6 @@ public class ControlUnit {
     public LightController lightController;
     public NotificationController notificationController = new NotificationController();
 
-    private double desiredLightHours = 0.5;
-
     public ControlUnit() {
         moistureControllers = new ArrayList<>(Arrays.asList(
             new MoistureController(notificationController, 0.0, 0),
@@ -31,7 +29,13 @@ public class ControlUnit {
             new NutrientController(notificationController, 0.2, 6)
         ));
 
-        lightController = new LightController(desiredLightHours);
+        lightController = new LightController(0.5);
+        lightController.addLight(new Light());
+        lightController.addLight(new Light());
+        lightController.addLight(new Light());
+        lightController.addLight(new Light());
+        lightController.addLight(new Light());
+        lightController.addLight(new Light());
     }
 
     public void controlUnit() {
